@@ -1,69 +1,56 @@
-import React, {useState} from 'react';
 import './App.css';
+import React from 'react';
 
-import { fetcher, getCategories, getProducts } from './fetcher';
+import {useCategories, useProducts } from './hooks/useFetch';
 
-import Category from './components/Category';
-
+import Category from './components/category';
 
 function App() {
-  const [categories, setCategories] = useState({errorMessage: '', data: [] });
-  const [products, setProducts] = useState({errorMessage: '', data: [] });
+  const { data: categories, loading, error} = useCategories();
+  const { data : products } = useProducts();
+  
+  //const [products, setProducts] = React.useState([]);
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      const responseObject = await getCategories();
-      setCategories(responseObject);
-    }
-    fetchData();    
-    
-  }, [])
+  const handleCategoryClick = (id) => {
+    debugger;
+   // getProducts('http://localhost:3001/products?catId=' + id);
+  };
 
-  const handleCategoryClick = id => {
-    const fetchData = async () => {
-      const responseObject = await getProducts(id);
-      setProducts(responseObject);
-    }
-    fetchData();    
-    
-  }
-
-  const renderCategories = () => {
-    return categories.data.map(c =>
-      <Category key={c.id} id={c.id} title={c.title} onCategoryClick={() => handleCategoryClick(c.id)} />
-    );
-  }
-
-  const renderProducts = () => {
-    return products.data.map(p => 
+  const RenderProducts = () => {
+    return products.map(p => 
       <div>{p.title}</div>
     )
   }
+  const RenderCategories = () => {
+    return categories.map((d) => (
+      <Category
+        id={d.id}
+        key={d.id}
+        title={d.title}
+        onCategoryClick={() => handleCategoryClick(d.id)}
+      />
+    ));
+  };
 
   return (
     <>
-    <header>My Store</header>
-
-    <section>
+      <header>Our Store</header>
+      <section>
         <nav>
-          {categories.errorMessage && <div>Error: {categories.errorMessage}</div>}
+          {loading && <div>Please wait!</div>}
+          {error && <div>{`Error loading categories ${error}`}</div>}
+          <ul>
+            {categories && RenderCategories()}
+          </ul>
+        </nav>
 
-        { categories.data && renderCategories()}
-        </nav>  
-        <article>
-          <h1>Products</h1>
-
-          {products.errorMessage && <div>Error: {products.errorMessage}</div>}
-
-          { products.data && renderProducts()}
-        </article>
+        <main>
+          {products && RenderProducts()}
+        </main>
       </section>
-      
-      <footer>
-        footer
-      </footer>
 
-      </>
+      <footer>something</footer>
+    </>
   );
 }
 

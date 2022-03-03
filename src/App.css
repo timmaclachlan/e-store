@@ -27,7 +27,7 @@ section {
 nav {
     -webkit-flex: 0.5;
     -ms-flex: 0.5;
-    flex: 0.5;
+    flex: 0.1;
     background: #ccc;
     padding: 20px;
 }
@@ -48,6 +48,7 @@ nav ul li:hover {
 }
 
 main {
+    flex: 0.9;
     padding-top: 20px;
 }
 

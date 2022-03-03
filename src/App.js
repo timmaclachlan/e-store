@@ -1,12 +1,11 @@
 import './App.css';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { fetcher, getCategories, getProducts } from './fetcher';
 
 import Category from './components/category';
 import CategoryProduct from './components/categoryProduct';
 
-import Category from './components/category';
 
 function App() {
   const [categories, setCategories] = useState({errorMessage: '', data: [] });
@@ -37,18 +36,9 @@ function App() {
   }
 
   const renderProducts = () => {
-    return products.data.map(p => <CategoryProduct {...p}>{p.title}</CategoryProduct>);
+    return products.data.map(p => <CategoryProduct key={p.id} {...p}>{p.title}</CategoryProduct>);
   }
-  const RenderCategories = () => {
-    return categories.map((d) => (
-      <Category
-        id={d.id}
-        key={d.id}
-        title={d.title}
-        onCategoryClick={() => handleCategoryClick(d.id)}
-      />
-    ));
-  };
+
 
   return (
     <>

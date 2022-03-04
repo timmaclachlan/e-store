@@ -17,7 +17,7 @@ const CategoryProduct = ({
     const navigate = useNavigate();
 
     return (
-        <article>
+        <ProductInfoArticle>
             <ProductTitle>
                 <Link to={`/products/${id}`}>{title}</Link>
             </ProductTitle>
@@ -68,11 +68,18 @@ const CategoryProduct = ({
                     <ProductInfoActionButton>Add to Basket</ProductInfoActionButton>
                 </ProductInfoAction>
             </aside>
-        </article>
+        </ProductInfoArticle>
     );
 };
 
 export default CategoryProduct;
+
+const ProductInfoArticle = styled.article`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 0.25fr 1fr 0.25fr;
+    column-gap: 20px;
+`;
 
 const ProductTitle = styled.div`
         grid-column: 1 / span 3;

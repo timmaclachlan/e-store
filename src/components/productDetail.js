@@ -19,7 +19,7 @@ const ProductDetail = () => {
 
 
   return (
-    <article>
+    <ProductInfoArticle>
       <ProductTitle>
         {product.data.title}
       </ProductTitle>
@@ -68,13 +68,24 @@ const ProductDetail = () => {
         </ProductInfoAction>
       </aside>
 
-      <div>{product.data?.description}</div>
+      <ProductInfoDescription>{product.data?.description}</ProductInfoDescription>
       
-    </article>
+    </ProductInfoArticle>
   )
 }
 
 export default ProductDetail;
+
+const ProductInfoArticle = styled.article`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 0.25fr 1fr 0.25fr;
+    column-gap: 20px;
+`;
+
+const ProductInfoDescription = styled.div`
+  grid-column: 1 / span 3;
+`;
 
 const ProductTitle = styled.div`
         grid-column: 1 / span 3;

@@ -17,6 +17,9 @@ const ProductDetail = () => {
     fetchData();
   }, [productId]);
 
+  const createMarkup = () => {
+  return { __html: product.data?.description}
+}
 
   return (
     <ProductInfoArticle>
@@ -68,7 +71,7 @@ const ProductDetail = () => {
         </ProductInfoAction>
       </aside>
 
-      <ProductInfoDescription>{product.data?.description}</ProductInfoDescription>
+      <ProductInfoDescription dangerouslySetInnerHTML={createMarkup()}></ProductInfoDescription>
       
     </ProductInfoArticle>
   )

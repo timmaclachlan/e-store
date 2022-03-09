@@ -24,7 +24,7 @@ const CategoryProduct = ({
 
             <figure>
                 <ProductImageContainer>
-                    <ProductImage src={`./assets/${image}`} alt={title} />
+                    <ProductImage src={`/assets/${image}`} alt={title} />
                 </ProductImageContainer>
             </figure>
 

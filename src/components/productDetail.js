@@ -1,81 +1,105 @@
-import React from 'react'
+import React, { useContext } from "react";
 
-import { useParams } from 'react-router-dom'
-import styled from 'styled-components';
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
 
-import { getProductById } from '../fetcher';
+import { CartContext } from "../contexts/cartContext";
+
+import { getProductById } from "../fetcher";
 
 const ProductDetail = () => {
-  const [product, setProduct] = React.useState({errorMessage: '', data: {} });
-  const {productId} = useParams();
+    const { addProduct } = useContext(CartContext);;
+    const [product, setProduct] = React.useState({
+        errorMessage: "",
+        data: {},
+    });
+    const { productId } = useParams();
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      const responseObject = await getProductById(productId);
-      setProduct(responseObject);
-    }
-    fetchData();
-  }, [productId]);
+    React.useEffect(() => {
+        const fetchData = async () => {
+            const responseObject = await getProductById(productId);
+            setProduct(responseObject);
+        };
+        fetchData();
+    }, [productId]);
 
-  const createMarkup = () => {
-  return { __html: product.data?.description}
-}
+    const createMarkup = () => {
+        return { __html: product.data?.description };
+    };
 
-  return (
-    <ProductInfoArticle>
-      <ProductTitle>
-        {product.data.title}
-      </ProductTitle>
+    return (
+        <ProductInfoArticle>
+            <ProductTitle>{product.data.title}</ProductTitle>
 
-      <figure>
-        <ProductImageContainer>
-          <ProductImage src={`/assets/${product.data.image}`} alt={product.data.title} />
-        </ProductImageContainer>
-      </figure>
+            <figure>
+                <ProductImageContainer>
+                    <ProductImage
+                        src={`/assets/${product.data.image}`}
+                        alt={product.data.title}
+                    />
+                </ProductImageContainer>
+            </figure>
 
-      <aside>
-        <ProductInfo>
-          <ProductInfoHeader>Dimensions</ProductInfoHeader>
-          <label>{product.data.specs?.dimensions}</label>
-        </ProductInfo>
+            <aside>
+                <ProductInfo>
+                    <ProductInfoHeader>Dimensions</ProductInfoHeader>
+                    <label>{product.data.specs?.dimensions}</label>
+                </ProductInfo>
 
-        {product.data.specs?.capacity &&
-          <ProductInfo>
-            <ProductInfoHeader>Capacity</ProductInfoHeader>
-            <label>{product.data.specs?.capacity}</label>
-          </ProductInfo>
-        }
+                {product.data.specs?.capacity && (
+                    <ProductInfo>
+                        <ProductInfoHeader>Capacity</ProductInfoHeader>
+                        <label>{product.data.specs?.capacity}</label>
+                    </ProductInfo>
+                )}
 
-        <ProductInfo>
-          <ProductInfoHeader>Features</ProductInfoHeader>
-          <ul>
-            {product.data.features?.map((f, i) => {
-              return <ProductInfoListItem key={`feature${i}`}>{f}</ProductInfoListItem>
-            })}
-          </ul>
-        </ProductInfo>
-      </aside>
+                <ProductInfo>
+                    <ProductInfoHeader>Features</ProductInfoHeader>
+                    <ul>
+                        {product.data.features?.map((f, i) => {
+                            return (
+                                <ProductInfoListItem key={`feature${i}`}>
+                                    {f}
+                                </ProductInfoListItem>
+                            );
+                        })}
+                    </ul>
+                </ProductInfo>
+            </aside>
 
-      <aside>
-        <ProductInfoFinancePrice>
-          &pound;{product.data.price}
-        </ProductInfoFinancePrice>
+            <aside>
+                <ProductInfoFinancePrice>
+                    &pound;{product.data.price}
+                </ProductInfoFinancePrice>
 
-        <ProductInfoStock>
-          <ProductInfoStockLabel>Stock Level: {product.data.stock}</ProductInfoStockLabel>
-          <ProductInfoStockLabel>FREE Delivery</ProductInfoStockLabel>
-        </ProductInfoStock>
+                <ProductInfoStock>
+                    <ProductInfoStockLabel>
+                        Stock Level: {product.data.stock}
+                    </ProductInfoStockLabel>
+                    <ProductInfoStockLabel>FREE Delivery</ProductInfoStockLabel>
+                </ProductInfoStock>
 
-        <ProductInfoAction>
-          <ProductInfoActionButton>Add to Basket</ProductInfoActionButton>
-        </ProductInfoAction>
-      </aside>
+                <ProductInfoAction>
+                    <ProductInfoActionButton
+                        onClick={() =>
+                            addProduct({
+                                id: product.data.id,
+                                title: product.data.title,
+                                price: product.data.price,
+                            })
+                        }
+                    >
+                        Add to Basket
+                    </ProductInfoActionButton>
+                </ProductInfoAction>
+            </aside>
 
-      <ProductInfoDescription dangerouslySetInnerHTML={createMarkup()}></ProductInfoDescription>
-      
-    </ProductInfoArticle>
-  )
-}
+            <ProductInfoDescription
+                dangerouslySetInnerHTML={createMarkup()}
+            ></ProductInfoDescription>
+        </ProductInfoArticle>
+    );
+};
 
 export default ProductDetail;
 
@@ -87,16 +111,16 @@ const ProductInfoArticle = styled.article`
 `;
 
 const ProductInfoDescription = styled.div`
-  grid-column: 1 / span 3;
+    grid-column: 1 / span 3;
 `;
 
 const ProductTitle = styled.div`
-        grid-column: 1 / span 3;
-        color: darkslategray;
-        font-weight: bold;
-        font-size: 1.5em;
-        padding-left: 10px;
-    `;
+    grid-column: 1 / span 3;
+    color: darkslategray;
+    font-weight: bold;
+    font-size: 1.5em;
+    padding-left: 10px;
+`;
 
 const ProductImageContainer = styled.div`
     padding: 10px;
@@ -106,7 +130,7 @@ const ProductImageContainer = styled.div`
 const ProductImage = styled.img`
     width: 100%;
     height: 100%;
-`;    
+`;
 
 const ProductInfo = styled.div`
     display: flex;

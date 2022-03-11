@@ -8,6 +8,11 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+a {
+    color: darkslategray;
+    text-decoration: none;
+}
+
 /* Style the header */
 header {
     background-color: #666;
@@ -15,6 +20,24 @@ header {
     text-align: center;
     font-size: 35px;
     color: white;
+    display: grid;
+    grid-template-columns: 0.1fr 1fr 0.1fr;
+}
+
+header a {
+    color: white;
+}
+
+#headerHomeIcon {
+    justify-self: start;
+}
+
+#headerTitle {
+    justify-self: center;
+}
+
+#headerCartIcon {
+    justify-self: end;
 }
 
 /* Container for flexboxes */
@@ -50,6 +73,7 @@ nav ul li:hover {
 main {
     flex: 0.9;
     padding-top: 20px;
+    min-height: 1600px;
 }
 
 /* Style the footer */
@@ -57,6 +81,10 @@ footer {
     background-color: #777;
     padding: 10px;
     text-align: center;
+    color: white;
+}
+
+footer a {
     color: white;
 }
 

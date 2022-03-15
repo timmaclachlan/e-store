@@ -7,17 +7,26 @@ import { CartContext } from "../contexts/cartContext";
 
 import { TrashIcon, UpIcon, DownIcon } from "./icons";
 
-const Basket = () => {
+const ShoppingBasket = () => {
     const [cartItems, setCartItems] = useState([]);
 
     const navigate = useNavigate();
-    const { getCartItems, removeProduct, increaseQuantity, decreaseQuantity, clearBasket } = useContext(CartContext);
+
+    const {
+        getCartItems,
+        removeProduct,
+        increaseQuantity,
+        decreaseQuantity,
+        clearBasket,
+    } = useContext(CartContext);
 
     useEffect(() => {
         setCartItems(getCartItems());
-    }, []);
+    }, [getCartItems]);
 
-    const renderCart = () => {
+    const renderTotal = () => {};
+
+    const renderBasket = () => {
         if (cartItems.length > 0) {
             return cartItems.map((p) => (
                 <React.Fragment key={p.id}>
@@ -27,13 +36,18 @@ const Basket = () => {
                     <BasketQty>
                         {p.quantity}
 
-                            <UpIcon width={20} onClick={() => setCartItems(increaseQuantity({id: p.id}))}></UpIcon>
-                            <DownIcon width={20} onClick={() => setCartItems(decreaseQuantity({id: p.id}))}></DownIcon>
-                            <TrashIcon
-                                width={20}
-                                onClick={() => setCartItems(removeProduct({ id: p.id }))}
-                            ></TrashIcon>
-
+                        <UpIcon
+                            width={20}
+                            onClick={() => increaseQuantity({ id: p.id })}
+                        ></UpIcon>
+                        <DownIcon
+                            width={20}
+                            onClick={() => decreaseQuantity({ id: p.id })}
+                        ></DownIcon>
+                        <TrashIcon
+                            width={20}
+                            onClick={() => removeProduct({ id: p.id })}
+                        ></TrashIcon>
                     </BasketQty>
                     <BasketPrice>&pound;{p.price}</BasketPrice>
                 </React.Fragment>
@@ -43,19 +57,10 @@ const Basket = () => {
         }
     };
 
-    const renderTotal = () => {
-        const cartItems = getCartItems();
-        const total = cartItems.reduce(
-            (total, item) => (total += item.price * item.quantity),
-            0
-        );
-        return total;
-    };
-
     return (
         <BasketContainer>
             <BasketTitle>Shopping Basket</BasketTitle>
-            <BasketButton onClick={() => navigate("/checkout")}>Checkout</BasketButton>
+            <BasketTotal>Total: £{renderTotal()}</BasketTotal>
 
             <BasketTable>
                 <BasketHeader>
@@ -64,17 +69,31 @@ const Basket = () => {
                     <h4>Price</h4>
                 </BasketHeader>
                 <BasketHeaderLine />
-                <BasketHeader>{renderCart()}</BasketHeader>
+                <BasketHeader>{renderBasket()}</BasketHeader>
                 <BasketHeaderLine />
             </BasketTable>
 
-          <BasketButton onClick={() => setCartItems(clearBasket())}>Clear</BasketButton>
-            <BasketTotal>Total: £{renderTotal()}</BasketTotal>
+            <ClearButton onClick={() => clearBasket()}>Clear</ClearButton>
+            <ProceedButton onClick={() => navigate("/checkout")}>
+                Checkout
+            </ProceedButton>
         </BasketContainer>
     );
 };
 
-export default Basket;
+export default ShoppingBasket;
+
+const BasketQty = styled.h3`
+    font-size: 18px;
+    font-weight: bold;
+    display: grid;
+    grid-template-columns: 0.1fr 0.05fr 0.1fr 0.1fr;
+`;
+
+const BasketPrice = styled.h3`
+    font-size: 20px;
+    font-weight: bold;
+`;
 
 const BasketContainer = styled.div`
     display: grid;
@@ -102,28 +121,22 @@ const BasketHeaderLine = styled.hr`
 `;
 
 const BasketTitle = styled.h2`
-  grid-column: 1 / span 2;
+    grid-column: 1 / span 2;
 
-  padding-bottom: 20px;
-`;
-
-const BasketQty = styled.h3`
-    font-size: 18px;
-    font-weight: bold;
-    display: grid;
-    grid-template-columns: 0.1fr 0.05fr 0.1fr 0.1fr;
-`;
-
-const BasketPrice = styled.h3`
-    font-size: 20px;
-    font-weight: bold;
+    padding-bottom: 20px;
 `;
 
 const BasketTotal = styled.h2`
     justify-self: end;
 `;
 
-const BasketButton = styled.button`
-  border-radius: 8px;
-  height: 40px;
+const ClearButton = styled.button`
+    border-radius: 8px;
+    height: 40px;
+`;
+
+const ProceedButton = styled.button`
+    border-radius: 8px;
+    height: 40px;
+    grid-column: 3;
 `;

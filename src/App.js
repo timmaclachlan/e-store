@@ -10,6 +10,7 @@ import Basket from "./components/basket";
 import Checkout from "./components/checkout";
 import Category from "./components/category";
 import Home from "./components/home";
+import OrderConfirmation from "./components/orderconfirmation";
 import Layout from "./components/layout";
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
                         <Route index element={<Home />} />
                         <Route path="basket" element={<Basket />} />
                         <Route path="checkout" element={<Checkout />} />
+                        <Route path="orderconfirmation" element={<OrderConfirmation />} />
                         <Route
                             path="categories/:categoryId"
                             element={<Category />}

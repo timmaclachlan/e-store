@@ -1,44 +1,13 @@
-import React, { useState, useContext, useEffect } from "react";
+import React from "react";
 
 import styled from "styled-components";
 
 import { useNavigate } from "react-router-dom";
 
-import { CartContext } from "../contexts/cartContext";
 
 const Checkout = () => {
-    const [cartItems, setCartItems] = useState([]);
 
     const navigate = useNavigate();
-    const { getItems } = useContext(CartContext);
-
-    useEffect(() => {
-        setCartItems(getItems());
-    }, [getItems]);
-
-    const renderCart = () => {
-        if (cartItems.length > 0) {
-            return cartItems.map((p) => (
-                <React.Fragment key={p.id}>
-                    <div>{p.title}</div>
-                    <BasketQty>{p.quantity}</BasketQty>
-                    <BasketPrice>&pound;{p.price}</BasketPrice>
-                </React.Fragment>
-            ));
-        } else {
-            return <div>The basket is currently empty</div>;
-        }
-    };
-
-    const renderTotal = () => {
-        const cartItems = getItems();
-
-        const total = cartItems.reduce(
-            (total, item) => total + item.price * item.quantity,
-            0
-        );
-        return total;
-    };
 
     const confirmOrder = () => {
         navigate('/orderconfirmation');
@@ -48,22 +17,7 @@ const Checkout = () => {
         <CheckoutContainer>
             {/* Row 1 */}
             <CheckoutTitle>Shopping Checkout</CheckoutTitle>
-
-            {/* Row 2 */}
-            <BasketTable>
-                <BasketHeader>
-                    <h4>Item</h4>
-                    <h4>Quantity</h4>
-                    <h4>Price</h4>
-                </BasketHeader>
-                <CheckoutHeaderLine />
-
-                <BasketHeader>{renderCart()}</BasketHeader>
-            </BasketTable>
-
-            {/* Row 3 */}
-            <BasketTotal>Total: £{renderTotal()}</BasketTotal>
-
+            
             {/* Row 4 */}
             <CheckoutHeader>
                 <h4>Your Details</h4>
@@ -173,10 +127,7 @@ const CheckoutFormCheckbox = styled.input`
     margin-bottom: 20px;
 `;
 
-const BasketTotal = styled.h2`
-    grid-column: 1 / span 3;
-    justify-self: end;
-`;
+
 
 const CheckoutButton = styled.button`
     border-radius: 8px;
@@ -190,23 +141,4 @@ const CancelButton = styled.button`
     grid-column: 1;
 `;
 
-const BasketTable = styled.div`
-    grid-column: 1 / span 3;
-    grid-template-rows: 0.25fr 1fr 0.25fr 0.25fr;
-    column-gap: 20px;
-    padding-left: 10px;
-`;
-const BasketHeader = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 0.5fr 0.5fr;
-`;
-const BasketQty = styled.h3`
-    font-size: 18px;
-    font-weight: bold;
-    display: grid;
-    grid-template-columns: 0.1fr 0.05fr 0.1fr 0.1fr;
-`;
-const BasketPrice = styled.h3`
-    font-size: 20px;
-    font-weight: bold;
-`;
+

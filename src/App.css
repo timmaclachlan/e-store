@@ -21,11 +21,21 @@ header {
     font-size: 35px;
     color: white;
     display: grid;
-    grid-template-columns: 0.1fr 1fr 0.1fr;
+    grid-template-columns: 0.1fr 0.1fr 1fr 0.1fr;
 }
 
 header a {
     color: white;
+}
+
+#search {
+    display: flex;
+}
+
+#search input {
+    margin-left: 10px;
+    height: 30px;
+    margin-top: 5px;
 }
 
 #headerHomeIcon {

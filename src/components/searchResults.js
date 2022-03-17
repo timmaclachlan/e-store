@@ -1,15 +1,41 @@
-import React from 'react'
+import React, { useEffect } from "react";
 
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import { getProductsByQuery } from "../fetcher";
+
+import CategoryProduct from "./categoryProduct";
 
 const SearchResults = () => {
-  const params = useParams();
+    const [products, setProducts] = React.useState({
+        errorMessage: "",
+        data: [],
+    });
 
-  debugger;
-  
-  return (
-    <div>SearchResults</div>
-  )
-}
+    let [searchParams ] = useSearchParams();
+    let query = searchParams.get("s");
 
-export default SearchResults
+    useEffect(() => {
+        const fetchData = async () => {
+            const responseObject = await getProductsByQuery(query);
+            setProducts(responseObject);
+        };
+        fetchData();
+    }, [query]);
+
+    const renderProducts = () => {
+        return products.data.map((p) => (
+            <CategoryProduct key={p.id} {...p}>
+                {p.title}
+            </CategoryProduct>
+        ));
+    };
+
+
+    return <div>
+        {products.errorMessage && <div>Error: {products.errorMessage}</div>}
+
+        {products.data && renderProducts()}
+    </div>;
+};
+
+export default SearchResults;

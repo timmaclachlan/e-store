@@ -9,18 +9,19 @@ const Checkout = () => {
     const [form, setForm] = React.useState({
         name: "",
         email: "",
-        billingAddress1: "",
+        shippingAddress1: "",
 
-        touched: { 
+        touched: {
             email: false,
-            password: false
-        }
+            password: false,
+            shippingAddress1: false
+        },
     });
 
     const errors = {
         name: form.name.length === 0,
         email: form.email.length === 0,
-        billingAddress1: form.billingAddress1.length === 0,
+        shippingAddress1: form.shippingAddress1.length === 0,
     };
     const disabled = Object.keys(errors).some((x) => errors[x]);
 
@@ -43,7 +44,7 @@ const Checkout = () => {
                 touched: { ...form.touched, [name]: true },
             };
         });
-    }
+    };
 
     const handleSubmit = (ev) => {
         if (disabled) {
@@ -53,7 +54,7 @@ const Checkout = () => {
         navigate("/orderconfirmation");
     };
 
-    const showError = field => errors[field] ? form.touched[field] : false;
+    const showError = (field) => (errors[field] ? form.touched[field] : false);
 
     return (
         <form onSubmit={handleSubmit}>
@@ -84,7 +85,7 @@ const Checkout = () => {
                     <CheckoutInput
                         type="text"
                         name="email"
-                        invalid={errors["email"]}
+                        invalid={showError("email")}
                         onChange={handleChange}
                         placeholder="Enter email"
                     />
@@ -106,12 +107,9 @@ const Checkout = () => {
                     <CheckoutFormLabel>Billing Address</CheckoutFormLabel>
 
                     <CheckoutAddress>
-                        <CheckoutInput
+                        <input
                             type="text"
                             name="billingAddress1"
-                            invalid={errors["billingAddress1"]}
-                            placeholder="Enter first address line"
-                            onChange={handleChange}
                         />
                         <input type="text" name="billingAddress2" />
                         <input type="text" name="billingCity" />
@@ -120,7 +118,12 @@ const Checkout = () => {
                     <CheckoutFormLabel>Shipping Address</CheckoutFormLabel>
 
                     <CheckoutAddress>
-                        <input type="text" name="shippingAddress1" />
+                        <CheckoutInput
+                            type="text"
+                            name="shippingAddress1"
+                            invalid={showError("shippingAddress1")}
+                            placeholder="Enter first address line"
+                        />
                         <input type="text" name="shippingAddress2" />
                         <input type="text" name="shippingCity" />
                     </CheckoutAddress>

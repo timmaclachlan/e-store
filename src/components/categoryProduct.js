@@ -65,7 +65,7 @@ const CategoryProduct = ({
                 </ProductInfoStock>
 
                 <ProductInfoAction>
-                    <ProductInfoActionButton onClick={() => navigate(`products/${id}`)}>
+                    <ProductInfoActionButton onClick={() => navigate(`/products/${id}`)}>
                         View Product
                     </ProductInfoActionButton>
                     <ProductInfoActionButton onClick={() => addProduct({id, title, price})}>Add to Basket</ProductInfoActionButton>
